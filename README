@@ -1,0 +1,5 @@
+Design and Analysis of various face recognition modules.
+
+eigenfaces.py - implements eigenfaces (PCA)
+input.py - contains input modules
+utility.py - contains utility modules
