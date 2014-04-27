@@ -44,6 +44,8 @@ def read_yale_images(test):
         dataset = ['centerlight','happy','noglasses','normal','sad','sleepy','surprised','wink']
     elif(test == "glasses"):
         dataset = ['centerlight','glasses','noglasses','normal']
+    elif(test == "choice"):
+        dataset = ['centerlight','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy','surprised','wink']
     count = 0
     training,testing,testing_answer,training_answer = [],[],[],[]
     for i in range(1,16):
@@ -53,15 +55,15 @@ def read_yale_images(test):
             filename = "subject"+str(i)+"."
         for item in dataset:
             if(count%2 == 0):
-                    img = Image.open("yalefaces/"+filename+item)
+                    img = Image.open("yalefaces/"+filename+item+".pgm")
                     img = img.convert("L")
                     testing.append(np.asarray(img, dtype=np.uint8))
-                    testing_answer.append(filename+item)
+                    testing_answer.append(filename+item+".pgm")
             elif(count%2 == 1):
-                    img = Image.open("yalefaces/"+filename+item)
+                    img = Image.open("yalefaces/"+filename+item+".pgm")
                     img = img.convert("L")
                     training.append(np.asarray(img, dtype=np.uint8))
-                    training_answer.append(filename+item)
+                    training_answer.append(filename+item+".pgm")
             count += 1
     print len(training), len(testing)
     return [training,training_answer,testing,testing_answer]
@@ -71,6 +73,8 @@ def read_orl_images(test):
         dataset = ['1','2','3','4','5','6','7','8','9','10']
     elif(test == 'pose'):
         dataset = ['1','2','3','4','5','6','10']
+    elif(test == "choice"):
+        dataset = ['1','2','3','4','5','6','7','8','9','10']
     count = 0
     training,testing,testing_answer,training_answer = [],[],[],[]
     for i in range(1,41):
