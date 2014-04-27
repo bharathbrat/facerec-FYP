@@ -1,5 +1,7 @@
 Design and Analysis of various face recognition modules.
 
 eigenfaces.py - implements eigenfaces (PCA)
+sift.py - implements SIFT
 input.py - contains input modules
 utility.py - contains utility modules
+GUI.py - contains GUI
