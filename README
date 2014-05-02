@@ -1,6 +1,11 @@
 Design and Analysis of various face recognition modules.
 
-eigenfaces.py - implements eigenfaces (PCA)
+eigenfaces.py - implements Principal Component Analysis(PCA)
+	Here, the average vector for the images in the database is obtained.
+	The individual vectors for a face image are subtracted with average vector to 
+	the principal components (eigenvectors) for that face image. These eigenvectors 
+	are then projected to a subspace and are used to find the best match.
+	
 sift.py - implements SIFT
 input.py - contains input modules
 utility.py - contains utility modules
