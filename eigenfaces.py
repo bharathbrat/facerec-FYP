@@ -1,10 +1,9 @@
 import cv2
 import numpy as np
-import os
-import sys
+import os,sys, platform
 from PIL import Image
-import random
-
+import random,atexit
+from time import clock
 from input import *
 from utility import *
 
@@ -30,7 +29,6 @@ def pca(X, y, num_components=0):
     eigenvectors = eigenvectors[:,0:num_components].copy()
     return [eigenvalues, eigenvectors, mu]
 
-
 def test_yale(test):
     projections = []
     success = []
@@ -38,7 +36,12 @@ def test_yale(test):
     print "TESTING YALE DATABASE --- EIGENFACE"
     training, training_answer, testing, testing_answer = [],[],[],[]
     [training, training_answer, testing, testing_answer] = read_yale_images(test)
-    [D, W, mu] = pca(asRowMatrix(training), training_answer)    
+    [D, W, mu] = pca(asRowMatrix(training), training_answer)
+    if platform.system()=="Windows":
+        look="\\"
+    else:
+        look="/"
+        
     for xi in training:
         projections.append(project(W,xi.reshape(1,-1),mu))
     count = 0
@@ -46,22 +49,34 @@ def test_yale(test):
     if(test == "choice"):
         return testing, training_answer, W, mu, projections, testing_answer
 ##################################################################
+    #start clock
+    startTime=clock()
     for i in range(len(testing)):
         result = predict(testing[i], training_answer, W, mu, projections)
-        print result, testing_answer[i]
-        if(result[6:9] == testing_answer[i][6:9]):
+        testAns=testing_answer[i]
+        print result," MATCHED WITH ", testAns
+        if(result[:result.find('.')] == testAns[:testAns.find('.')]):
             print "HIT!"
-            count+= 1
-            success.append(("yalefaces/"+testing_answer[i],"yalefaces/"+result))
+            count += 1
+            success.append((testAns,result))
         else:
-            failure.append(("yalefaces/"+testing_answer[i],"yalefaces/"+result))
-    plot("Eigenface_yale_failure_"+test, failure[:4*(len(failure)/4)])
-    plot("Eigenface_yale_success_"+test, success[:16])
+            failure.append((testAns,result))
+    endTime=clock()
+    #end clock
+    totalTime=endTime-startTime
+    singleTime=float(totalTime)/len(testing)
+    singleTimeString=formatTime(secondsToStr(singleTime))
+    totalTimeString=formatTime(secondsToStr(totalTime))
     accuracy = (float(count)/len(testing))*100
-    print accuracy
-    os.system("convert Eigenface_yale_failure_"+test+".png  Eigenface_yale_failure_"+test+".pgm")
-    os.system("convert Eigenface_yale_success_"+test+".png  Eigenface_yale_success_"+test+".pgm")
-    return "Eigenface_yale_failure_"+test+".pgm", "Eigenface_yale_success_"+test+".pgm", accuracy
+    print accuracy,"\n", totalTimeString, "\n", singleTimeString
+    print len(success), len(failure)
+    success_Path="Eigenface_yale_success_"+test+".png"
+    failure_Path="Eigenface_yale_failure_"+test+".png"
+    success_copyPath=os.path.join(os.path.join("static","images"),success_Path)
+    failure_copyPath=os.path.join(os.path.join("static","images"),failure_Path)
+    plot(failure_copyPath, failure[:4*(len(failure)/4)])
+    plot(success_copyPath, success[:16])
+    return failure_Path,success_Path, accuracy, singleTimeString,totalTimeString, len(training), len(testing), count
 
 def test_orl(test):
     projections = []
@@ -71,6 +86,11 @@ def test_orl(test):
     training, training_answer, testing, testing_answer = [],[],[],[]
     [training, training_answer, testing, testing_answer] = read_orl_images(test)
     [D, W, mu] = pca(asRowMatrix(training), training_answer)
+    if platform.system()=="Windows":
+        look="\\"
+    else:
+        look="/"
+        
     for xi in training:
         projections.append(project(W,xi.reshape(1,-1),mu))
     count = 0
@@ -78,19 +98,34 @@ def test_orl(test):
     if(test == "choice"):
         return testing, training_answer, W, mu, projections, testing_answer
 ##################################################################
+    #start clock
+    startTime=clock()
     for i in range(len(testing)):
         result = predict(testing[i], training_answer, W, mu, projections)
-        print result, testing_answer[i]
-        if(result[:result.find("/")] == testing_answer[i][:testing_answer[i].find("/")]):
+        testAns=testing_answer[i]
+        print result," MATCHED WITH ", testAns
+        if(result[:result.find(look,12)] == testAns[:testAns.find(look,12)]):
             print "HIT!"
             count+= 1
-            success.append(("orl_faces/"+testing_answer[i],"orl_faces/"+result))
+            success.append((testAns,result))
         else:
-            failure.append(("orl_faces/"+testing_answer[i],"orl_faces/"+result))
+            failure.append((testAns,result))
+    endTime=clock()
+    #end clock
+    totalTime=endTime-startTime
+    singleTime=float(totalTime)/len(testing)
+    singleTimeString=formatTime(secondsToStr(singleTime))
+    totalTimeString=formatTime(secondsToStr(totalTime))
     accuracy = (float(count)/len(testing))*100
-    print accuracy
-    plot("Eigenface_orl_failure_"+test, failure[:4*(len(failure)/4)])
-    plot("Eigenface_orl_success_"+test, success[:16])
-    os.system("convert Eigenface_orl_failure_"+test+".png  Eigenface_orl_failure_"+test+".pgm")
-    os.system("convert Eigenface_orl_success_"+test+".png  Eigenface_orl_success_"+test+".pgm")
-    return "Eigenface_orl_failure_"+test+".pgm", "Eigenface_orl_success_"+test+".pgm", accuracy
+    print accuracy,"\n", totalTimeString, "\n", singleTimeString
+
+    success_Path="Eigenface_orl_success_"+test+".png"
+    failure_Path="Eigenface_orl_failure_"+test+".png"
+    success_copyPath=os.path.join(os.path.join("static","images"),success_Path)
+    failure_copyPath=os.path.join(os.path.join("static","images"),failure_Path)
+    plot(failure_copyPath, failure[:4*(len(failure)/4)])
+    plot(success_copyPath, success[:16])
+    return failure_Path,success_Path, accuracy, singleTimeString,totalTimeString, len(training), len(testing), count
+
+
+

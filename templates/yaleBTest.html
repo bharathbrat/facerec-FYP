@@ -1,0 +1,45 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>Choose Test</title>
+		<link href="/static/app.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript">
+			WebFontConfig = {
+			  google: { families: [ 'Merriweather:300:latin', 'Open+Sans:300,400:latin' ] }
+			};
+			(function() {
+			  var wf = document.createElement('script');
+			  wf.src = ('http:' == document.location.protocol ? 'http' : 'http') +
+			    '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+			  wf.type = 'text/javascript';
+			  wf.async = 'true';
+			  var s = document.getElementsByTagName('script')[0];
+			  s.parentNode.insertBefore(wf, s);
+			})();
+		</script>
+	</head>
+	<body>
+	<div id="header">
+			<h2> Design and Analysis of Face Recognition Algorithms</h2>
+		</div>
+	<div id="page">
+			<div id="choose">
+				<p><strong> Please choose the type to test you wanna do on the selected database</strong></p>
+				<ul id="list-options">
+					<li><a class="option" href="/test/general">General Test</a></li>
+					<li><a class="option" href="/test/illumination">Illumination Test</a></li>
+					<li><a class="option" href="/test/pose">Pose Test</a></li>
+					<li><a class="option" href="/test/expression">Expression Test</a></li>
+					<li><a class="option" href="/test/singleImage">Test a single Image</a></li>
+				</ul>
+			</div>
+			<div id="border"></div>
+		<div id="description">
+		</div>
+
+	</div>
+		<!--div id="footer">
+			<p>Project by: Aakanksha Parameshwar <span>(1BY10CS002)</span>, Bharath M S <span>((1BY10CS015)</span></p>
+		</div-->
+	</body>
+</html>

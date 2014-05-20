@@ -1,0 +1,51 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>Results</title>
+		<link href="/static/app.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript">
+			WebFontConfig = {
+			  google: { families: [ 'Merriweather:300:latin', 'Open+Sans:300,400:latin' ] }
+			};
+			(function() {
+			  var wf = document.createElement('script');
+			  wf.src = ('http:' == document.location.protocol ? 'http' : 'http') +
+			    '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+			  wf.type = 'text/javascript';
+			  wf.async = 'true';
+			  var s = document.getElementsByTagName('script')[0];
+			  s.parentNode.insertBefore(wf, s);
+			})();
+		</script>
+	</head>
+	<body>
+	<div id="header">
+			<h2> Design and Analysis of Face Recognition Algorithms</h2>
+		</div>
+	<div id="page">
+		<div id="description">
+		    <div id="accuracy">
+            <h3>Statistics</h3>
+            <p>Training set length:&#160;<strong>{{training_set_length}}</strong></p>
+            <p>Testing set length:&#160;<strong>{{testing_set_length}}</strong></p>
+            <p>Number of correctly matched images:&#160;<strong>{{countHits}}</strong></p>
+			<p>Accuracy:&#160;<strong>{{accuracy}}</strong><br>
+            <p>Total matching time:&#160;<strong>{{ totalTime }}</strong></p>
+            <p>Single matching time:&#160;<strong>{{ singleTime }}</strong></p>
+            
+			</div>
+		</div>
+		<div id="choose">
+		<p class="comment">View the results based on choice</p>
+			<ul id="list-options">
+				<li><a class="option" href="/result/Success">Sucess</a></li>
+				<li><a class="option" href="/result/Failure">Failure</a></li>
+				<!--li><a class="option" href="/result/Intermediate">Intermediate</a></li-->
+			</ul>
+		</div>
+	</div>
+				<!--div id="footer">
+			<p>Project by: Aakanksha Parameshwar <span>(1BY10CS002)</span>, Bharath M S <span>((1BY10CS015)</span></p>
+		</div-->
+	</body>
+</html>

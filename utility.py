@@ -38,19 +38,19 @@ def create_font(fontname='Tahoma',fontsize=10):
     return {'fontname':fontname, 'fontsize':fontsize}
 
 def choicePlot(image1,image2,title):
-    os.system("convert "+image1+" "+image2+" +append "+"plots/"+title)
+    os.system("convert "+image1+" "+image2+" +append "+title)
 
 def plot(title, images):
     fig = plt.figure()#figsize=(4,3),dpi=50)
     for i in xrange(len(images)):
         os.system("convert "+images[i][0]+" "+images[i][1]+" +append temp")
-        ax0 = plt.subplot(len(images)/4, 4, i)
+        ax0 = plt.subplot(len(images)/4,4, i)
         plt.setp(ax0.get_xticklabels(),visible=False)
         plt.setp(ax0.get_yticklabels(),visible=False)
         img = Image.open("temp")
         plt.imshow(img, cmap = cm.gray, origin = 'lower')
     print "Plotted "+title
-    fig.savefig("plots/"+title)
+    fig.savefig(title)
 
 def subplot(title, images, rows, cols, sptitle="subplot", sptitles = [], colormap=cm.gray, ticks_visible=True, filename=None):
     fig = plt.figure()
@@ -70,4 +70,23 @@ def subplot(title, images, rows, cols, sptitle="subplot", sptitles = [], colorma
         plt.show()
     else:
         fig.savefig(filename)
+
+def secondsToStr(t):
+    return "%d:%02d:%02d.%03d" % \
+        reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],
+            [(t*1000,),1000,60,60])
+
+def formatTime(t):
+    formattedTime=""
+    formatText=[" hrs "," m "," s "," ms "]
+    timeArray=t.split(':')
+    timeArray.remove
+    secondsArray=timeArray[2].split('.')
+    timeArray.remove(timeArray[2])
+    timeArray.append(secondsArray[0])
+    timeArray.append(secondsArray[1])
+    for i in range(len(timeArray)):
+        if( int(timeArray[i]) != 0):
+            formattedTime=formattedTime+timeArray[i]+formatText[i]
+    return formattedTime
 

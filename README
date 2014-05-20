@@ -1,12 +1,34 @@
 Design and Analysis of various face recognition modules.
 
-eigenfaces.py - implements Principal Component Analysis(PCA)
-	Here, the average vector for the images in the database is obtained.
-	The individual vectors for a face image are subtracted with average vector to 
-	the principal components (eigenvectors) for that face image. These eigenvectors 
-	are then projected to a subspace and are used to find the best match.
-	
-sift.py - implements SIFT
-input.py - contains input modules
-utility.py - contains utility modules
-GUI.py - contains GUI
+eigenfaces.py - implements Principal Component Analysis(PCA). It reduces the 	dimensionality and effect of noise by representing M face images in the  form of K 	eigenface vectors, derived from the covariance matrix. These K eigenface  vectors 	contain all the important features required to represent a face image. The input 	image is also represent as an eigenface vector and a comparison of distances of the 	vectors would yield the recognized face, if the distance is beyond the threshold 	otherwise, the face is an unknown face. 
+		Here, the average vector for the images in the database is obtained. The 	individual vectors for a face image are subtracted with average vector to the 	principal components (eigenvectors) for that face image. These eigenvectors are 	then projected to a subspace and are used to find the best match.
+
+fisherfaces.py -  The components identified by a PCA do not necessarily contain any 	discriminative information at all, so the projected samples are smeared together and 	a classification becomes impossible. In order to find the combination of features that 	separates best between classes the Linear Discriminant Analysis maximizes the ratio 	of between-classes to within-classes scatter. The idea is simple: same classes should 	cluster tightly together, while different classes are as far away as possible from each 	other.
+
+sift.py - implements Scale Invariant Feature transform algorithm. SIFT key points of 	objects are first extracted from a set of reference images and stored in a database. An 	object is recognized in a new image by individually comparing each feature from the 	new image to this database and finding candidate matching features based on 	Euclidean distance of their feature vectors
+
+lem.py - implements Line Edge Map algorithm. This algorithm extracts as features line 	segments from a face edge map. In which the faces were encoded into binary edge 	map using sobel edge detection algorithm. A line edge map approach extracts lines 	from a face edge map as features.  After thinning the face edge map, a polygonal line 	fitting process known as the dynamic two strip algorithm is applied to generate the 	LEM of a face. 
+		In this project we use canny edge detector algorithm to improve the 	sharpness of the edges extracted. We then use cv2.goodFeaturesToTrack to extract 	good key points along the edges. Since LEMs are maintained as points rather than 	lines, we use the extracted points to match LEMs by using Hausdroff distance. 
+
+input.py -  consists of functions to read images from Yale database A and ORL database. 	The images are stored in the respective database folders. The file path for the images 	is supplied to the cv2.imread() function which reads the image, fixes the size (if 	necessary) and the depending on the type of test chosen by the user (which is passed 	as parameter to the function that reads images), the array representation of the 	image is stored either in a training list or a testing list. Along with this, the filenames 	of images are stored in another list called training_answer and testing_answer 	depending on the set it belongs to. This comes handy in displaying the matching 	results and in plotting the visuals, as filenames are required to extract an image at a 	particular location and merge it with images for display of result. 
+		Above functionality of dividing images into training and testing set is based 	on the type of test passed as parameter.
+
+utility.py - contains all the additional functions required for predicting the result, 	plotting the visuals, distance algorithms used for comparing distances, etc. 
+	matplotlib is used to plot visuals which is then displayed as an image on web page for 	user to view.
+
+static/ - This folder contains all the static files (such as JS files, CSS files, images, 	databases, visuals to be displayed as result) required for the web based GUI.
+
+templates/ - This folder constains all the html templates that will be rendered by flask to display webpages on the browser.
+
+NOTE:
+There are a few things to be installed and added prior to running this app. They are:
+The databases are to be stored in the working directory by the names used in the app.
+All the files contained in the databases must have a .pgm extension.
+For running sift.py the files with extracted key points is required i.e. files with .key extension.
+Packages to install ---
+Python 2.7
+matplotlib
+OpenCV 2.4
+PIL
+Numpy
+flask	

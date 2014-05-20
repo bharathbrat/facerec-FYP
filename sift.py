@@ -2,7 +2,8 @@ import cv2
 import numpy as np
 import scipy
 import os
-import math
+import math, platform,atexit
+from time import clock
 from input import *
 from utility import *
 
@@ -29,26 +30,7 @@ def parse(fileName):
         i += 132
     return [locs, descriptors]
 
-def sift(imageFile, db):
-    if (db == 'orl'):
-        img = cv2.imread('orl_faces/'+imageFile)
-        url = 'orl_faces/'+imageFile
-    if(db == 'yale'):
-        img = cv2.imread('yalefaces/'+imageFile)
-        url = 'yalefaces/'+imageFile
-#    image = np.asarray(img, dtype=np.uint8)
-#    [n,d,s] = image.shape
-#    f = open('tmp.pgm','w')
-#    f.write('')
-#    f.close()
-
-#    f = open('tmp.pgm','a')
-#    f.write("P5\n"+str(d)+" "+str(n)+"\n255\n")
-#    temp = image.T[0].T.flatten()
-#    f.write(temp)
-#    f.close()
-#    os.system('./sift <tmp.pgm>'+url+'.key')
-#    os.system('./sift <orl_faces/s1/'+imageFile+'> tmp.key')
+def sift(url):
     locs, descriptors = parse(url+'.key')
     return [locs, descriptors]
 
@@ -75,7 +57,7 @@ def localPredict(test, answerSet, training):
         return 999
 
 def matchImage(test, trainDesc):
-    distRatio = 0.5
+    distRatio = 0.6
     count = 0
     match = []
     dist = []
@@ -93,8 +75,6 @@ def matchImage(test, trainDesc):
         if(newdotprods[0] < distRatio * newdotprods[1]):
             match.append(list(dotprod).index(newdotprods[0]))
             dist.append(newdotprods[0])
-#        else:
-#            match.append(0)
     return dist, match
     
 def test_orl(test):
@@ -103,38 +83,57 @@ def test_orl(test):
     failure = []
     locs_training, descriptors_training = [], []
     locs_testing, descriptors_testing = [], []
+    if platform.system()=="Windows":
+        look="\\"
+    else:
+        look="/"
     for i in training_answer:
-        [a,b] = sift(i,'orl')
+        [a,b] = sift(i)
         locs_training.append(a)
         descriptors_training.append(b)
     for i in testing_answer:
-        [a,b] = sift(i,'orl')
+        [a,b] = sift(i)
         locs_testing.append(a)
         descriptors_testing.append(b)
     count = 0
     x = 0
 ##################################################################
     if(test == "choice"):
-        return descriptors_testing, training_answer, descriptors_training
+        return descriptors_testing, training_answer, descriptors_training, testing_answer
 ##################################################################
+    #start clock
+    startTime=clock()
     for i in range(len(testing_answer)):
         result = localPredict(descriptors_testing[i], training_answer, descriptors_training)
         if (result!=999):
-            print result, testing_answer[i]
-            if(result[:result.find("/")] == testing_answer[i][:testing_answer[i].find("/")]):
+            testAns=testing_answer[i]
+            print result," MATCHED WITH ", testAns
+            if(result[:result.find(look,12)] == testAns[:testAns.find(look,12)]):
                 print "HIT!"
                 count += 1
-                success.append(("orl_faces/"+testing_answer[i],"orl_faces/"+result))
+                success.append((testAns,result))
             else:
-                failure.append(("orl_faces/"+testing_answer[i],"orl_faces/"+result))
+                failure.append((testAns,result))
         else:
-            print "No match!", testing_answer[i]
+            print "No match!", testAns
             x += 1
-    plot("SIFT_orl_failure_"+test+".png", failure[:4*(len(failure)/4)])
-    plot("SIFT_orl_success_"+test+".png", success[:16])
-    accuracy = 100*float(count)/len(testing_answer)
-    print accuracy, x
-    return "SIFT_orl_failure_"+test+".png", "SIFT_orl_success_"+test+".png", accuracy
+    endTime=clock()
+    #end clock
+    totalTime=endTime-startTime
+    singleTime=float(totalTime)/len(testing)
+    singleTimeString=formatTime(secondsToStr(singleTime))
+    totalTimeString=formatTime(secondsToStr(totalTime))
+    accuracy = (float(count)/len(testing))*100
+    print accuracy,"\n", totalTimeString, "\n", singleTimeString
+
+    success_Path="SIFT_orl_success_"+test+".png"
+    failure_Path="SIFT_orl_failure_"+test+".png"
+    success_copyPath=os.path.join(os.path.join("static","images"),success_Path)
+    failure_copyPath=os.path.join(os.path.join("static","images"),failure_Path)
+    plot(failure_copyPath, failure[:4*(len(failure)/4)])
+    plot(success_copyPath, success[:8])
+    return failure_Path,success_Path, accuracy, singleTimeString,totalTimeString, len(training), len(testing), count
+
 
 def test_yale(test):
     [training,training_answer,testing,testing_answer] = read_yale_images(test)
@@ -142,35 +141,56 @@ def test_yale(test):
     success = []
     locs_training, descriptors_training = [], []
     locs_testing, descriptors_testing = [], []
+    if platform.system()=="Windows":
+        look="\\"
+    else:
+        look="/"
     for i in training_answer:
-        [a,b] = sift(i,'yale')
+        [a,b] = sift(i)
         locs_training.append(a)
         descriptors_training.append(b)
     for i in testing_answer:
-        [a,b] = sift(i,'yale')
+        [a,b] = sift(i)
         locs_testing.append(a)
         descriptors_testing.append(b)
     count = 0
     x = 0
 ##################################################################
     if(test == "choice"):
-        return descriptors_testing, training_answer, descriptors_training
+        return descriptors_testing, training_answer, descriptors_training, testing_answer
 ##################################################################
+    #start clock
+    startTime=clock()
     for i in range(len(testing_answer)):
         result = localPredict(descriptors_testing[i], training_answer, descriptors_training)
         if (result!=999):
-            print i, result, testing_answer[i]
-            if(result[0:9] == testing_answer[i][0:9]):
+            testAns=testing_answer[i]
+            print result," MATCHED WITH ", testAns
+            if(result[:result.find('.')] == testAns[:testAns.find('.')]):
                 print "HIT!"
-                count += 1
-                success.append(("yalefaces/"+testing_answer[i],"yalefaces/"+result))
+                count+= 1
+                success.append((testAns,result))
             else:
-                failure.append(("yalefaces/"+testing_answer[i],"yalefaces/"+result))
+                failure.append((testAns,result))
         else:
-            print "No match!", testing_answer[i]
+            print "No match!", testAns
             x += 1
-    plot("SIFT_yale_failure_"+test+".png", failure[:4*(len(failure)/4)])
-    plot("SIFT_yale_success_"+test+".png", success[:16])
-    accuracy = 100*float(count)/len(testing_answer)
-    print accuracy, x
-    return "SIFT_yale_failure_"+test+".png", "SIFT_yale_success_"+test+".png", accuracy
+    endTime=clock()
+    #end clock
+    totalTime=endTime-startTime
+    singleTime=float(totalTime)/len(testing)
+    singleTimeString=formatTime(secondsToStr(singleTime))
+    totalTimeString=formatTime(secondsToStr(totalTime))
+    accuracy = (float(count)/len(testing))*100
+    print accuracy,"\n", totalTimeString, "\n", singleTimeString
+
+    success_Path="SIFT_yale_success_"+test+".png"
+    failure_Path="SIFT_yale_failure_"+test+".png"
+    success_copyPath=os.path.join(os.path.join("static","images"),success_Path)
+    failure_copyPath=os.path.join(os.path.join("static","images"),failure_Path)
+    plot(failure_copyPath, failure[:4*(len(failure)/4)])
+    plot(success_copyPath, success[:8])
+    return failure_Path,success_Path, accuracy, singleTimeString,totalTimeString, len(training), len(testing), count
+
+  
+

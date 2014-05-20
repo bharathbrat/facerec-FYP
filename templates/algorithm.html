@@ -1,0 +1,57 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>Choose Algorithm</title>
+		<link href="/static/app.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript">
+			WebFontConfig = {
+			  google: { families: [ 'Merriweather:300:latin', 'Open+Sans:300,400:latin' ] }
+			};
+			(function() {
+			  var wf = document.createElement('script');
+			  wf.src = ('http:' == document.location.protocol ? 'http' : 'http') +
+			    '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+			  wf.type = 'text/javascript';
+			  wf.async = 'true';
+			  var s = document.getElementsByTagName('script')[0];
+			  s.parentNode.insertBefore(wf, s);
+			})();
+		</script>
+	</head>
+	<body>
+	<div id="header">
+			<h2> Design and Analysis of Face Recognition Algorithms</h2>
+		</div>
+	<div id="page">
+	<div id="description">
+			<p>We are implementing 4 algorithms. They are: </p>
+			<ul>
+			<ul> <p> Holistic approach -</p>
+				<li><span>Principal Component Analysis (PCA)</span> 	- it reduces the dimensionality and effect of noise by representing M face images in the form of K eigenface vectors, derived from the covariance matrix. These K eigenface vectors contain all the important features required to represent a face image. The input image is also represent as an eigenface vector and a comparison of distances of the vectors would yield the recognized face.</li>
+				<li><span>Linear Discriminant Analysis (LDA)</span>		- it maximizes the ratio of the between-class scatter and the within-class scatter and is thus purportedly better for classification than PCA.</li>
+			</ul>
+			<ul> <p>Feature based approach -</p>
+				<li><span>Scale Invariant Feature Transform (SIFT)</span>		- it extracts interesting points on the object and they can be extracted to provide a "feature description" of the object. This description, extracted from a training image, can then be used to identify the face when attempting to recognize a test image by extracting interesting points from it. </li>
+				<li><span>Line Edge Map (LEM)</span>		- it constructs a Line Edge Map of each training image. From this it extracts lines and stores just the end points. These end points are used to perform recognition after end points are also extracted from the test image.</li>
+			</ul>
+			</ul>
+			</div>
+			<!--div id="border"></div-->
+			
+			<div id="choose">
+				<ul id="list-options">
+                    <p class="comment">Please choose the algorithm to begin the test </p>
+					<li><a class="option" href="/algorithm/eigenface">Eigenface Algorithm</a></li>
+					<li><a class="option" href="/algorithm/fisherface">Fisherface Algorithm</a></li>
+					<li><a class="option" href="/algorithm/sift">SIFT algorithm</a></li>
+					<li><a class="option" href="/algorithm/lem">Line Edge Map Algorithm</a></li>
+				</ul>
+			</div>
+			
+		
+	</div>
+		<!--div id="footer">
+			<p>Project by: Aakanksha Parameshwar <span>(1BY10CS002)</span>, Bharath M S <span>((1BY10CS015)</span></p>
+		</div-->
+	</body>
+</html>

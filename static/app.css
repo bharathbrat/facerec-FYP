@@ -1,0 +1,188 @@
+body,html {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Open Sans',sans-serif;
+	font-weight:lighter;
+	line-height: 150%;
+	font-size: 100%;
+	/*position: relative;*/
+	/*background-color:green;
+	background-image:url("./images/billie_holiday_new.png") repeat scroll center top #EEEEEE;*/
+}
+#page {
+	width: 80%;
+	height: auto;
+	margin: 0 auto;
+	/*position:relative;*/
+	display:block;
+	background-color:white;
+}
+#choose{
+	width:30%;
+	height:50px;
+	margin:20px auto;
+	text-align:center;
+    display:inline-block;
+    font-weight:lighter;
+    position:absolute;
+    top:14%;
+    right:10%;
+}
+span{
+	color:#3498DB;
+    font-weight:bold;
+}
+#list-options{
+	list-style:none;
+	margin:30px auto;
+	
+}
+#list-options li,#button{
+	background-color:#3498DB;
+	margin:10px auto;
+	padding:10px 10px;
+	text-align:center;
+	border-radius:3px;
+}
+#button{
+	width:10%;
+	height:auto;
+	margin:0 auto;
+}
+.option{
+	text-decoration:none;
+	color:white;
+	font-size:20px;
+}
+#list-options li:hover{
+    background-color:#F03C3D;
+    cursor:pointer;
+}
+#header{
+	position:relative;
+	top:0;
+	height:auto;
+	width:100%;
+	padding:5px;
+	text-align:center;
+	display:block;
+	color:#DBBB8E;
+	background-color:#303030;
+	background-image:url("billie_holiday_new.png") repeat scroll center top #EEEEEE;
+}
+#footer{
+	/*background-image:url("..\images\billie_holiday_new.png") repeat scroll center top #EEEEEE;*/
+	position:absolute;
+	bottom:0;
+	padding:5px;
+	text-align:center;
+	display:block;
+	height:auto;
+	width:100%;
+	color:#DBBB8E;
+	background-color:#303030;
+}
+#data{
+	display:inline-block;
+}
+#description{
+	width:60%;
+	height:auto;
+	margin: 20px auto;
+	padding:10px 30px 10px 0px;
+	display:inline-block;
+    border-right:1px solid black;
+}
+#introduction{
+	width:80%;
+	height:auto;
+	margin: 0 auto;
+	display:block;
+}
+#border{
+    position:relative;
+	width:60%;
+	border-bottom:0.5px solid grey;
+	margin:0 auto;
+    display:block;
+}
+#index-image{
+	width:40%;
+	height:auto;
+	margin:auto;
+	vertical-align: center;
+}
+#image-choice{
+    width:100%;
+    height:auto;
+    margin:0 auto;
+}
+.display-image div{
+	width:12%;
+	height:auto;
+    display:inline-block;
+    opacity:0.6;
+}
+.image{
+    width:100%;
+    height:auto;
+}
+/*.display-image:hover{
+    background-color:#F03C3D;    
+}*/
+.comment{
+    text-align:center;
+    font-weight:bold;
+}
+#result,#miss,#hit{
+    margin:0 auto;
+    width:60%;
+    height:auto;
+}
+#result h1,#miss h2,#hit h2{
+	padding:20px;
+	margin:20px 0;
+    font-weight:lighter;
+    margin:0 auto;
+	text-align:center;
+}
+.display-image div:hover{
+    border: 1px solid #DBBB8E;
+    opacity:1;
+}
+#accuracy{
+    width:90%;
+    height:auto;
+    padding:20px;
+    margin:0;
+    font-weight:bolder;
+    font-size:20px;
+    border-radius: 5px;
+    border:2px solid #303030;
+}
+#accuracy strong{
+    color: #3498DB;
+    float:right;
+}
+#accuracy h3{
+    text-align:center;
+    font-weight:bold;
+}
+#result img{
+    width:100%;
+    height:auto;
+    border: 5px solid #DBBB8E;
+}
+#hit img{
+    width:100%;
+    height:auto;
+    border: 5px solid #26ED71;
+}
+#miss img{
+    width:100%;
+    height:auto;
+    border: 5px solid #F03C3D;
+}
+

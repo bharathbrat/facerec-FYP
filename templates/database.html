@@ -1,0 +1,49 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>Choose Database</title>
+		<link href="/static/app.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript">
+			WebFontConfig = {
+			  google: { families: [ 'Merriweather:300:latin', 'Open+Sans:300,400:latin' ] }
+			};
+			(function() {
+			  var wf = document.createElement('script');
+			  wf.src = ('http:' == document.location.protocol ? 'http' : 'http') +
+			    '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+			  wf.type = 'text/javascript';
+			  wf.async = 'true';
+			  var s = document.getElementsByTagName('script')[0];
+			  s.parentNode.insertBefore(wf, s);
+			})();
+		</script>
+	</head>
+	<body>
+	<div id="header">
+			<h2> Design and Analysis of Face Recognition Algorithms</h2>
+		</div>
+	<div id="page">
+		<div id="description">
+		<p>We have chosen 3 standard databases for comparison purposes. They are: </p>
+		<ul>
+			<li><span>Yale Database A</span> 	- Contains 165 grayscale images of 15 subjects. There are 11 images per subject, one per different facial expression or configuration.</li>
+			<!--li><span>Yale Database B</span>		- <em>Contains 5760 single light source images of 10 subjects each seen under 576 viewing conditions varying in pose and illumination.</em></li-->
+			<li><span>ORL or AT & T Database</span>		-Conatins 400 images of 40 distinct subjects. There are 10 images per subject taken by varying lighting, facial expressions and facial details.</li>
+		</ul>
+		</div>
+		<!--div id="border"></div-->
+		<div id="choose">
+			
+			<ul id="list-options">
+			    <p class="comment" ><strong>Pick a database to continue with the test.</strong></p>
+				<li><a class="option" href="/yaleDB-A">YALE DATABASE A</a></li>
+				<!--li><a class="option" href="/yaleDB-B">YALE DATABASE B</a></li-->
+				<li><a class="option" href="/orlDB">ORL DATABASE</a></li>
+			</ul>
+		</div>
+	</div>
+		<!--div id="footer">
+			<p>Project by: Aakanksha Parameshwar <span>(1BY10CS002)</span>, Bharath M S <span>((1BY10CS015)</span></p>
+		</div-->
+	</body>
+</html>

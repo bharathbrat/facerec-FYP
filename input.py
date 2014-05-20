@@ -1,94 +1,73 @@
 from PIL import Image
 import random
 import numpy as np
-import cv2
-
-"""
-def read_yale_images(path, sz=None):
-    c = 0
-    count = 0
-    flag = 1
-    training,testing,testing_answer,training_answer = [],[],[],[]
-    for dirname,dirnames,filenames in os.walk(path):
-        for filename in filenames:
-            c = c+1
-            x =random.random()
-            try:
-                if(x<0.5):
-                    img = Image.open(os.path.join(dirname, filename))
-                    img = img.convert("L")
-                    testing.append(np.asarray(img, dtype=np.uint8))
-                    testing_answer.append(filename)
-                else:
-                    im = Image.open(os.path.join(dirname,filename))
-                    im = im.convert("L")    
-                    if(sz is not None):
-                        im = im.resize(sz, Image.ANTIALIAS)
-                    training.append(np.asarray(im,dtype=np.uint8))
-                    training_answer.append(filename)
-            except IOError:
-                print "I/O Error({0}) : {1}".format(errno,strerror)
-            except:
-                print "Unexpected Error: ",sys.exc_info()[0]
-                raise
-    print len(training), len(testing)
-    return [training,training_answer,testing,testing_answer]
-"""
+import cv2,os,atexit
+from time import clock
 
 def read_yale_images(test):
     if(test == "general"):
-        dataset = ['centerlight','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy','surprised','wink']
+        training_dataset = ['centerlight','glasses','happy','leftlight','noglasses','normal']
+        testing_dataset = ['rightlight','sad','sleepy','surprised','wink']
     elif(test == "illumination"):
-        dataset = ['centerlight','leftlight','noglasses','normal','rightlight']
+        training_dataset = ['glasses','noglasses','normal']
+        testing_dataset = ['centerlight','leftlight','rightlight']
     elif(test == "expression"):
-        dataset = ['centerlight','happy','noglasses','normal','sad','sleepy','surprised','wink']
+        training_dataset = ['noglasses','normal']
+        testing_dataset = ['happy','sleepy','sad','wink','surprised']
     elif(test == "glasses"):
-        dataset = ['centerlight','glasses','noglasses','normal']
+        training_dataset = ['noglasses','normal']
+        testing_dataset = ['glasses']
     elif(test == "choice"):
-        dataset = ['centerlight','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy','surprised','wink']
-    count = 0
+        training_dataset = ['centerlight','glasses','happy','leftlight','noglasses']
+        testing_dataset = ['normal','rightlight','sad','sleepy','surprised','wink']
     training,testing,testing_answer,training_answer = [],[],[],[]
     for i in range(1,16):
         if(i < 10):
             filename = "subject0"+str(i)+"."
         else:
             filename = "subject"+str(i)+"."
-        for item in dataset:
-            if(count%2 == 0):
-                    img = Image.open("yalefaces/"+filename+item+".pgm")
-                    img = img.convert("L")
-                    testing.append(np.asarray(img, dtype=np.uint8))
-                    testing_answer.append(filename+item+".pgm")
-            elif(count%2 == 1):
-                    img = Image.open("yalefaces/"+filename+item+".pgm")
-                    img = img.convert("L")
-                    training.append(np.asarray(img, dtype=np.uint8))
-                    training_answer.append(filename+item+".pgm")
-            count += 1
-    print len(training), len(testing)
+        for item in testing_dataset:
+            absName=os.path.join("yalefaces",filename+item+".pgm")
+            img = Image.open(absName)
+            img = img.convert("L")
+            testing.append(np.asarray(img, dtype=np.uint8))
+            testing_answer.append(absName)
+        for item in training_dataset:
+            absName=os.path.join("yalefaces",filename+item+".pgm")
+            img = Image.open(absName)
+            img = img.convert("L")
+            training.append(np.asarray(img, dtype=np.uint8))
+            training_answer.append(absName)
+    print "training: ",len(training),", testing:",len(testing)
     return [training,training_answer,testing,testing_answer]
 
 def read_orl_images(test):
     if(test == 'general'):
-        dataset = ['1','2','3','4','5','6','7','8','9','10']
+        training_dataset = ['1','2','3','4','5']
+        testing_dataset = ['6','7','8','9','10']
     elif(test == 'pose'):
-        dataset = ['1','2','3','4','5','6','10']
+        training_dataset = ['1','3','7','8']
+        testing_dataset = ['2','4','5','6','9','10']
     elif(test == "choice"):
-        dataset = ['1','2','3','4','5','6','7','8','9','10']
+        training_dataset = ['1','3','5','7','9']
+        testing_dataset = ['2','4','6','8','10']
     count = 0
     training,testing,testing_answer,training_answer = [],[],[],[]
     for i in range(1,41):
-        for j in range(len(dataset)):
-            if(count%2   == 1):
-                img = cv2.imread("orl_faces/s"+str(i)+"/"+str(dataset[j])+".pgm",0)
-                testing.append(np.asarray(img, dtype=np.uint8))
-                testing_answer.append('s'+str(i)+'/'+str(dataset[j])+'.pgm')
-            else:
-                img = cv2.imread("orl_faces/s"+str(i)+"/"+str(dataset[j])+".pgm",0)
-                training.append(np.asarray(img, dtype=np.uint8))
-                training_answer.append('s'+str(i)+"/"+str(dataset[j])+'.pgm')
-            count += 1
-    print len(training), len(testing)
+        for j in testing_dataset:
+            storeName=os.path.join("s"+str(i),j+".pgm")
+            absName=os.path.join("orl_faces",storeName)
+            img = cv2.imread(absName,0)
+            testing.append(np.asarray(img, dtype=np.uint8))
+            storeName
+            testing_answer.append(absName)
+        for j in training_dataset:
+            storeName=os.path.join("s"+str(i),j+".pgm")
+            absName=os.path.join("orl_faces",storeName)
+            img = cv2.imread(absName,0)
+            training.append(np.asarray(img, dtype=np.uint8))
+            training_answer.append(absName)
+    print "training : ",len(training),"  ,  testing :",len(testing)
     return [training,training_answer,testing,testing_answer]
-                            
+
 

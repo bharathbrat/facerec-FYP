@@ -1,0 +1,35 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>Results</title>
+		<link href="/static/app.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript">
+			WebFontConfig = {
+			  google: { families: [ 'Merriweather:300:latin', 'Open+Sans:300,400:latin' ] }
+			};
+			(function() {
+			  var wf = document.createElement('script');
+			  wf.src = ('http:' == document.location.protocol ? 'http' : 'http') +
+			    '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+			  wf.type = 'text/javascript';
+			  wf.async = 'true';
+			  var s = document.getElementsByTagName('script')[0];
+			  s.parentNode.insertBefore(wf, s);
+			})();
+		</script>
+	</head>
+	<body>
+	<div id="header">
+			<h2> Design and Analysis of Face Recognition Algorithms</h2>
+		</div>
+	<div id="page">
+		<div id="result">
+            <h1> {{ name }} </h1>
+			<img id="result-img" src="{{ filename }}" alt="result"/>
+		</div>
+	</div>
+		<!--div id="footer">
+			<p>Project by: Aakanksha Parameshwar <span>(1BY10CS002)</span>, Bharath M S <span>((1BY10CS015)</span></p>
+		</div-->
+	</body> 
+</html>
